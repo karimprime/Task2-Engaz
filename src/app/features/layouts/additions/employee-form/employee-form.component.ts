@@ -8,11 +8,31 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { Employee } from '../../../../core/interface/employee/employee.interface';
+import { EnglishOnlyDirective } from '../../../../core/directives/english-only.directive';
+import { ArabicOnlyDirective } from '../../../../core/directives/arabic-only.directive';
+import { NumbersOnlyDirective } from '../../../../core/directives/numbers-only.directive';
+
+interface Employee {
+  nameEn: string;
+  nameAr: string;
+  idNumber: string;
+  gender: string;
+  birthdate: string;
+  religion: string;
+  mobile: string;
+  email: string;
+}
 
 @Component({
   selector: 'app-employee-form',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    EnglishOnlyDirective,
+    ArabicOnlyDirective,
+    NumbersOnlyDirective,
+  ],
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.scss'],
 })
@@ -23,18 +43,37 @@ export class EmployeeFormComponent {
 
   constructor(private fb: FormBuilder) {
     this.employeeForm = this.fb.group({
-      nameEn: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
-      nameAr: [
-        '',
-        [Validators.required, Validators.pattern(/^[\u0600-\u06FF\s]*$/)],
-      ],
-      idNumber: ['', [Validators.required, Validators.pattern(/^\d{14}$/)]],
+      nameEn: ['', [Validators.required, this.validateEnglishOnly]],
+      nameAr: ['', [Validators.required, this.validateArabicOnly]],
+      idNumber: ['', [Validators.required, this.validateIdNumber]],
       gender: ['', Validators.required],
       birthdate: ['', [Validators.required, this.validateAge]],
-      religion: ['', [Validators.required]],
+      religion: ['', Validators.required],
       mobile: ['', [Validators.required, this.validateEgyptianMobile]],
       email: ['', [Validators.required, Validators.email]],
     });
+  }
+
+  private validateEnglishOnly(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+    return /^[a-zA-Z\s]+$/.test(value) ? null : { englishOnly: true };
+  }
+
+  private validateArabicOnly(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+    return /^[\u0600-\u06FF\s]+$/.test(value) ? null : { arabicOnly: true };
+  }
+
+  private validateIdNumber(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+    return /^\d{14}$/.test(value) ? null : { invalidId: true };
   }
 
   private validateEgyptianMobile(
@@ -42,8 +81,7 @@ export class EmployeeFormComponent {
   ): ValidationErrors | null {
     const value = control.value;
     if (!value) return null;
-    const valid = /^01[0125][0-9]{8}$/.test(value);
-    return valid ? null : { invalidEgyptianMobile: true };
+    return /^01[0125]\d{8}$/.test(value) ? null : { invalidMobile: true };
   }
 
   private validateAge(control: AbstractControl): ValidationErrors | null {
@@ -51,36 +89,24 @@ export class EmployeeFormComponent {
     const birthdate = new Date(control.value);
     const today = new Date();
     const age = today.getFullYear() - birthdate.getFullYear();
-    const monthDiff = today.getMonth() - birthdate.getMonth();
-
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthdate.getDate())
-    ) {
-      return age - 1 < 18 ? { underAge: true } : null;
-    }
-    return age < 18 ? { underAge: true } : null;
+    return age >= 18 ? null : { underAge: true };
   }
 
   onSubmit() {
     if (this.employeeForm.valid) {
-      this.employeeAdded.emit(this.employeeForm.value as Employee);
-      this.employeeForm.reset();
-    } else {
-      this.markFormGroupTouched(this.employeeForm);
+      const employee: Employee = {
+        ...this.employeeForm.value,
+        gender: this.employeeForm.value.gender as 'male' | 'female',
+        religion: this.employeeForm.value.religion as
+          | 'muslim'
+          | 'christian'
+          | '',
+      };
+      this.employeeAdded.emit(employee);
     }
   }
 
   onClear() {
     this.employeeForm.reset();
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach((control) => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
   }
 }

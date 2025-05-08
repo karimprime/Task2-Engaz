@@ -1,11 +1,10 @@
-
 export interface Employee {
   nameEn: string;
   nameAr: string;
   idNumber: string;
-  gender: 'male' | 'female';
+  gender: string;
   birthdate: string;
-  religion?: 'muslim' | 'christian' | '';
+  religion: string;
   mobile: string;
   email: string;
 }

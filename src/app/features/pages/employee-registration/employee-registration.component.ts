@@ -12,7 +12,7 @@ export class EmployeeRegistrationComponent {
   onEmployeeAdded(employee: Employee) {
     console.log('New employee added:', employee);
     alert(
-      `Employee added successfully!\nName: ${employee.nameEn}\nID: ${employee.idNumber}`
+      `Employee added!\nName: ${employee.nameEn}\nID: ${employee.idNumber}`
     );
   }
 }

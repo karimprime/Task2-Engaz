@@ -37,6 +37,8 @@
               class="form-control w-100"
               placeholder="e.g karim"
               autocomplete="given-name"
+              appEnglishOnly
+              maxlength="50"
             />
             <!-- English Name validation messages -->
             @if (employeeForm.get('nameEn')?.touched &&
@@ -44,7 +46,7 @@
             <div class="text-danger small mt-1">
               @if (employeeForm.get('nameEn')?.errors?.['required']) {
               <div>English name is required</div>
-              } @if (employeeForm.get('nameEn')?.errors?.['pattern']) {
+              } @if (employeeForm.get('nameEn')?.errors?.['englishOnly']) {
               <div>Only English letters allowed</div>
               }
             </div>
@@ -64,14 +66,15 @@
               placeholder="م. كريم"
               autocomplete="given-name"
               dir="rtl"
+              appArabicOnly
+              maxlength="50"
             />
-            <!-- Arabic Name validation messages -->
             @if (employeeForm.get('nameAr')?.touched &&
             employeeForm.get('nameAr')?.errors) {
             <div class="text-danger small mt-1">
               @if (employeeForm.get('nameAr')?.errors?.['required']) {
               <div>Arabic name is required</div>
-              } @if (employeeForm.get('nameAr')?.errors?.['pattern']) {
+              } @if (employeeForm.get('nameAr')?.errors?.['arabicOnly']) {
               <div>Only Arabic letters allowed</div>
               }
             </div>
@@ -94,6 +97,7 @@
               maxlength="14"
               class="form-control"
               autocomplete="off"
+              appNumbersOnly
             />
           </div>
           <!-- ID Number validation messages -->
@@ -102,8 +106,8 @@
           <div class="text-danger small mt-1">
             @if (employeeForm.get('idNumber')?.errors?.['required']) {
             <div>ID number is required</div>
-            } @if (employeeForm.get('idNumber')?.errors?.['pattern']) {
-            <div>Must be 14 digits</div>
+            } @if (employeeForm.get('idNumber')?.errors?.['invalidId']) {
+            <div>Must be exactly 14 digits</div>
             }
           </div>
           }
@@ -124,7 +128,7 @@
                 class="form-select"
                 autocomplete="sex"
               >
-                <option value="" selected disabled>Select Gender</option>
+                <option value="" disabled hidden>Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -168,11 +172,11 @@
           </div>
         </div>
 
-        <!-- Religion selection dropdown (optional field) -->
+        <!-- Religion selection dropdown -->
         <div class="d-flex flex-wrap justify-content-between gap-4 mb-3">
           <div class="Religion-field-wrapper">
             <label for="religion" class="fontFamily dark-gray-color form-label">
-              Religion
+              Religion *
             </label>
             <div class="input-icon-wrapper">
               <i class="bi bi-gem input-icon"></i>
@@ -182,13 +186,12 @@
                 class="form-select"
                 autocomplete="religion"
               >
-                <option value="" selected disabled>Select Religion</option>
+                <option value="" disabled hidden>Select Religion</option>
                 <option value="muslim">Muslim</option>
                 <option value="christian">Christian</option>
               </select>
             </div>
-
-            <!-- Gender validation -->
+            <!-- Religion validation -->
             @if (employeeForm.get('religion')?.touched &&
             employeeForm.get('religion')?.errors) {
             <div class="text-danger small mt-1">Religion is required</div>
@@ -212,6 +215,8 @@
                 class="form-control"
                 placeholder="01x xxxx xxxx"
                 autocomplete="tel"
+                appNumbersOnly
+                maxlength="11"
               />
             </div>
             @if (employeeForm.get('mobile')?.touched &&
@@ -219,9 +224,10 @@
             <div class="text-danger small mt-1">
               @if (employeeForm.get('mobile')?.errors?.['required']) {
               <div>Mobile number is required</div>
-              } @if
-              (employeeForm.get('mobile')?.errors?.['invalidEgyptianMobile']) {
-              <div>Please enter a valid Egyptian mobile number</div>
+              } @if (employeeForm.get('mobile')?.errors?.['invalidMobile']) {
+              <div>
+                Please enter a valid Egyptian mobile number (01X XXXXXXX)
+              </div>
               }
             </div>
             }
