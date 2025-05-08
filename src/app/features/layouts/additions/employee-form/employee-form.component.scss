@@ -1,0 +1,195 @@
+/* Header styling with background image */
+.header-container {
+  background-image: url("/images/background-header.png");
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
+}
+
+/* Header title styling */
+.header-title {
+  font-weight: 600;
+  font-size: 1.87rem;
+  line-height: 2.37rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Header description styling */
+.header-description {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+/* Form padding */
+.form-container {
+  padding: 2rem;
+}
+
+/* Personal Information section title */
+.personal-info-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.87rem;
+  margin-bottom: 1.5rem;
+}
+
+/* input field wrapper */
+.input-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 24.25rem;
+}
+
+.Religion-field-wrapper {
+  min-width: 24.25rem;
+}
+
+/* Label styling for all form labels */
+.form-label {
+  font-weight: 500;
+  font-size: 0.87rem;
+  line-height: 1.25rem;
+  margin-bottom: 0.37rem;
+}
+
+/* Form group wrapper */
+.form-group {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+/* Input field wrapper with icon */
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Adjust input fields with left padding for icon space */
+.input-icon-wrapper input,
+.input-icon-wrapper select {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Icon Inside the Input and Select */
+.input-icon-wrapper .input-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+  font-size: 1.2rem;
+}
+
+/* Placeholder styling for Gender select */
+.input-icon-wrapper select option:first-child {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Remove the default arrow of the select dropdown */
+.input-icon-wrapper select::-ms-expand {
+  display: none;
+}
+
+/* Styling for Gender and Birthdate fields on focus */
+.input-icon-wrapper select:focus,
+.input-icon-wrapper input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.input-icon-wrapper select:focus + .input-icon,
+.input-icon-wrapper input:focus + .input-icon {
+  color: #007bff;
+}
+
+/* General Input Icon Style */
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon-wrapper select {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Icon Inside the Select */
+.input-icon-wrapper .input-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+  font-size: 1.2rem;
+}
+
+/* Adjust the first option as placeholder-like */
+.input-icon-wrapper select option:first-child {
+  color: #6c757d;
+  font-style: normal;
+}
+
+.input-icon-wrapper select::-ms-expand {
+  display: none;
+}
+
+.input-icon-wrapper select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.input-icon-wrapper select:focus + .input-icon {
+  color: #007bff;
+}
+
+.empty-space {
+  margin-top: 9.8rem;
+}
+
+.buttons-form {
+  width: 100%;
+  padding: 10px;
+  margin-top: 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.btn-clear {
+  background-color: #ffffff;
+  border: 1px solid #d0d5dd;
+}
+
+.btn-add {
+  color: #ffffff;
+}
+
+button:disabled {
+  background-color: #065f49;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

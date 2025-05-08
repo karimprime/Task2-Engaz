@@ -1,0 +1,282 @@
+<section
+  class="form-section d-flex flex-column align-items-center justify-content-center border rounded-4 color-border-form m-auto"
+>
+  <div class="w-100">
+    <!-- Header section with title and description -->
+    <header class="header-container background-header rounded-top-4">
+      <h2 class="fontFamily black-color header-title">Add Employee</h2>
+      <p class="fontFamily gray-color header-description">
+        Manage your team members and their account permissions here.
+      </p>
+    </header>
+
+    <!-- Employee form using Angular reactive forms -->
+    <form
+      [formGroup]="employeeForm"
+      (ngSubmit)="onSubmit()"
+      class="form-container"
+      autocomplete="on"
+    >
+      <div class="d-flex flex-column">
+        <!-- Section title for personal information -->
+        <h3 class="fontFamily black-color personal-info-title">
+          Personal Info
+        </h3>
+
+        <!-- Name fields: English and Arabic -->
+        <div class="d-flex flex-wrap justify-content-between gap-4 mb-3">
+          <!-- English Name input with validation messages -->
+          <div class="input-field-wrapper">
+            <label for="nameEn" class="fontFamily dark-gray-color form-label">
+              Name (en) *
+            </label>
+            <input
+              type="text"
+              id="nameEn"
+              formControlName="nameEn"
+              class="form-control w-100"
+              placeholder="e.g karim"
+              autocomplete="given-name"
+            />
+            <!-- English Name validation messages -->
+            @if (employeeForm.get('nameEn')?.touched &&
+            employeeForm.get('nameEn')?.errors) {
+            <div class="text-danger small mt-1">
+              @if (employeeForm.get('nameEn')?.errors?.['required']) {
+              <div>English name is required</div>
+              } @if (employeeForm.get('nameEn')?.errors?.['pattern']) {
+              <div>Only English letters allowed</div>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Arabic Name input with validation messages -->
+          <div class="input-field-wrapper">
+            <label for="nameAr" class="fontFamily dark-gray-color form-label">
+              Name (ar) *
+            </label>
+            <input
+              type="text"
+              id="nameAr"
+              formControlName="nameAr"
+              class="form-control w-100"
+              placeholder="م. كريم"
+              autocomplete="given-name"
+              dir="rtl"
+            />
+            <!-- Arabic Name validation messages -->
+            @if (employeeForm.get('nameAr')?.touched &&
+            employeeForm.get('nameAr')?.errors) {
+            <div class="text-danger small mt-1">
+              @if (employeeForm.get('nameAr')?.errors?.['required']) {
+              <div>Arabic name is required</div>
+              } @if (employeeForm.get('nameAr')?.errors?.['pattern']) {
+              <div>Only Arabic letters allowed</div>
+              }
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- ID Number input field -->
+        <div class="form-group">
+          <label for="idNumber" class="form-label fontFamily dark-gray-color">
+            ID Number *
+          </label>
+          <div class="input-icon-wrapper">
+            <i class="bi bi-credit-card input-icon"></i>
+            <input
+              type="text"
+              id="idNumber"
+              formControlName="idNumber"
+              placeholder="Enter ID Number (14 digits)"
+              maxlength="14"
+              class="form-control"
+              autocomplete="off"
+            />
+          </div>
+          <!-- ID Number validation messages -->
+          @if (employeeForm.get('idNumber')?.touched &&
+          employeeForm.get('idNumber')?.errors) {
+          <div class="text-danger small mt-1">
+            @if (employeeForm.get('idNumber')?.errors?.['required']) {
+            <div>ID number is required</div>
+            } @if (employeeForm.get('idNumber')?.errors?.['pattern']) {
+            <div>Must be 14 digits</div>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- Gender and Birthdate input group -->
+        <div class="d-flex flex-wrap justify-content-between gap-4 mb-3">
+          <!-- Gender dropdown -->
+          <div class="input-field-wrapper">
+            <label for="gender" class="fontFamily dark-gray-color form-label">
+              Gender *
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-person input-icon"></i>
+              <select
+                id="gender"
+                formControlName="gender"
+                class="form-select"
+                autocomplete="sex"
+              >
+                <option value="" selected disabled>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <!-- Gender validation -->
+            @if (employeeForm.get('gender')?.touched &&
+            employeeForm.get('gender')?.errors) {
+            <div class="text-danger small mt-1">Gender is required</div>
+            }
+          </div>
+
+          <!-- Birthdate input -->
+          <div class="input-field-wrapper">
+            <label
+              for="birthdate"
+              class="fontFamily dark-gray-color form-label"
+            >
+              Birthdate *
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-calendar input-icon"></i>
+              <input
+                type="date"
+                id="birthdate"
+                formControlName="birthdate"
+                class="form-control"
+                autocomplete="bday"
+              />
+            </div>
+            <!-- Birthdate validation -->
+            @if (employeeForm.get('birthdate')?.touched &&
+            employeeForm.get('birthdate')?.errors) {
+            <div class="text-danger small mt-1">
+              @if (employeeForm.get('birthdate')?.errors?.['required']) {
+              <div>Birthdate is required</div>
+              } @if (employeeForm.get('birthdate')?.errors?.['underAge']) {
+              <div>Must be at least 18 years old</div>
+              }
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Religion selection dropdown (optional field) -->
+        <div class="d-flex flex-wrap justify-content-between gap-4 mb-3">
+          <div class="Religion-field-wrapper">
+            <label for="religion" class="fontFamily dark-gray-color form-label">
+              Religion
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-gem input-icon"></i>
+              <select
+                id="religion"
+                formControlName="religion"
+                class="form-select"
+                autocomplete="religion"
+              >
+                <option value="" selected disabled>Select Religion</option>
+                <option value="muslim">Muslim</option>
+                <option value="christian">Christian</option>
+              </select>
+            </div>
+
+            <!-- Gender validation -->
+            @if (employeeForm.get('religion')?.touched &&
+            employeeForm.get('religion')?.errors) {
+            <div class="text-danger small mt-1">Religion is required</div>
+            }
+          </div>
+        </div>
+
+        <!-- Mobile number and Email fields -->
+        <div class="d-flex flex-wrap justify-content-between gap-4 mb-3">
+          <!-- Mobile input with validation -->
+          <div class="input-field-wrapper">
+            <label for="mobile" class="fontFamily dark-gray-color form-label">
+              Mobile *
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-telephone input-icon"></i>
+              <input
+                type="tel"
+                id="mobile"
+                formControlName="mobile"
+                class="form-control"
+                placeholder="01x xxxx xxxx"
+                autocomplete="tel"
+              />
+            </div>
+            @if (employeeForm.get('mobile')?.touched &&
+            employeeForm.get('mobile')?.errors) {
+            <div class="text-danger small mt-1">
+              @if (employeeForm.get('mobile')?.errors?.['required']) {
+              <div>Mobile number is required</div>
+              } @if
+              (employeeForm.get('mobile')?.errors?.['invalidEgyptianMobile']) {
+              <div>Please enter a valid Egyptian mobile number</div>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Email input with validation -->
+          <div class="input-field-wrapper">
+            <label for="email" class="fontFamily dark-gray-color form-label">
+              Email *
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-envelope input-icon"></i>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                placeholder="Enter Email Address"
+                autocomplete="email"
+              />
+            </div>
+            @if (employeeForm.get('email')?.touched &&
+            employeeForm.get('email')?.errors) {
+            <div class="text-danger small mt-1">
+              @if (employeeForm.get('email')?.errors?.['required']) {
+              <div>Email is required</div>
+              } @if (employeeForm.get('email')?.errors?.['email']) {
+              <div>Please enter a valid email</div>
+              }
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Form buttons: Clear and Add -->
+        <div class="d-flex gap-3 border-top empty-space">
+          <!-- Clear form button -->
+          <button
+            type="button"
+            class="buttons-form more-dark-gray-color btn-clear"
+            (click)="onClear()"
+          >
+            Clear
+          </button>
+
+          <!-- Submit button to add employee (disabled if form is invalid) -->
+          <button
+            type="submit"
+            class="buttons-form green-color btn-add"
+            [disabled]="employeeForm.invalid"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

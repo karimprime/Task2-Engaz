@@ -1,0 +1,33 @@
+@use "./variables";
+
+.color-border-form {
+  border-color: variables.$border-form-color;
+}
+
+.fontFamily {
+  font-family: variables.$font-family;
+}
+
+.black-color {
+  color: variables.$black-color;
+}
+
+.gray-color {
+  color: variables.$gray-color;
+}
+
+.dark-gray-color {
+  color: variables.$dark-gray-color;
+}
+
+.green-color {
+  background-color: variables.$green-color;
+}
+
+.more-dark-gray-color {
+  border-color: variables.$more-dark-gray-color;
+}
+
+.background-header {
+  background-color: variables.$header-color;
+}
