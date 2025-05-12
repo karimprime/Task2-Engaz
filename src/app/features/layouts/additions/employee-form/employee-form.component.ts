@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 import { EnglishOnlyDirective } from '../../../../core/directives/english-only.directive';
 import { ArabicOnlyDirective } from '../../../../core/directives/arabic-only.directive';
-import { NumbersOnlyDirective } from '../../../../core/directives/numbers-only.directive';
 
 interface Employee {
   nameEn: string;
@@ -31,7 +30,6 @@ interface Employee {
     ReactiveFormsModule,
     EnglishOnlyDirective,
     ArabicOnlyDirective,
-    NumbersOnlyDirective,
   ],
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.scss'],
@@ -96,11 +94,6 @@ export class EmployeeFormComponent {
     if (this.employeeForm.valid) {
       const employee: Employee = {
         ...this.employeeForm.value,
-        gender: this.employeeForm.value.gender as 'male' | 'female',
-        religion: this.employeeForm.value.religion as
-          | 'muslim'
-          | 'christian'
-          | '',
       };
       this.employeeAdded.emit(employee);
     }
