@@ -5,119 +5,128 @@
       <p class="app-subtitle">Human Resources Management System</p>
     </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <form
       class="form-container"
       [formGroup]="loginForm"
       (ngSubmit)="onSubmit()"
     >
-      <div class="input-field">
-        <label for="email" class="field-label required">
-          <i class="pi pi-user mr-2"></i>Email
+      <div class="d-flex flex-column gap-2">
+        <label for="email" class="fw-medium required">
+          Email
         </label>
         <input
           pInputText
           id="email"
           formControlName="email"
           placeholder="username@engaz.com"
-          class="w-full"
-          [pTooltip]="getEmailError()"
-          tooltipEvent="focus"
-          tooltipPosition="bottom"
-          [showDelay]="0"
-          [hideDelay]="0"
+          [class]="{
+            'p-invalid': loginForm.get('email')?.invalid &&
+              (loginForm.get('email')?.dirty ||
+                loginForm.get('email')?.touched)
+          }"
         />
+
+                <!-- Email Validation Messages -->
+      @if (loginForm.get('email')?.errors && loginForm.get('email')?.touched) {
+      <div id="email-error">
+        @if (loginForm.get('email')?.getError('required')) {
+        <div class="d-flex align-items-center gap-2">
+        <i class="pi pi-times-circle text-danger"></i>
+            <span class="font-medium text-danger">Oops! It is Required!</span>
+        </div>
+        }
+        @if (loginForm.get('email')?.getError('email')) {
+            <div class="d-flex align-items-center gap-2">
+            <i class="pi pi-times-circle text-danger"></i>
+            <span class="font-medium text-danger">Oops! Please enter a valid Email!</span>
+        </div>
+        }
+      </div>
+      }
+                  <!-- Email Success Message -->
+      @if (!loginForm.get('email')?.errors && loginForm.get('email')?.touched) {
+        <div class="d-flex align-items-center gap-2">
+            <i class="pi pi-check-circle text-success"></i>
+            <span class="font-medium text-success">Alright!Everything Done</span>
+      </div>
+      }
       </div>
 
-      <div class="input-field">
-        <label for="password" class="field-label required">
-          <i class="pi pi-lock mr-2"></i>Password
-        </label>
-        <p-password
-          formControlName="password"
-          inputId="password"
-          [toggleMask]="true"
-          [feedback]="false"
-          placeholder="Enter Your Password"
-          [pTooltip]="getPasswordError()"
-          tooltipEvent="focus"
-          tooltipPosition="bottom"
-          [showDelay]="0"
-          [hideDelay]="0"
+<!-- password input -->
+<div class="d-flex flex-column gap-2">
+  <label for="password" class="fw-medium required">Password</label>
+
+  <p-password
+    formControlName="password"
+    inputId="password"
+    [toggleMask]="true"
+    [feedback]="false"
+    (onFocus)="passwordFocused.set(true)"
+    (onBlur)="passwordFocused.set(false)"
+    placeholder="Enter Your Password"
+    [class]="{
+      'p-invalid': passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)
+    }"
+  ></p-password>
+
+  <!-- Password Strength Checks -->
+  @if (passwordFocused()) {
+    <ul>
+      @for (check of passwordChecks() | keyvalue; track check.key) {
+        <li
+          class="d-flex align-items-center"
+          [class]="check.value ? ' text-success' : ' text-danger'"
         >
-          <ng-template pTemplate="footer">
-            <p-divider class="my-2"></p-divider>
-            <ul class="password-strength">
-              <li [class.valid]="passwordChecks().hasMinLength">
-                <i
-                  class="pi"
-                  [ngClass]="
-                    passwordChecks().hasMinLength
-                      ? 'pi-check-circle'
-                      : 'pi-times-circle'
-                  "
-                ></i>
-                At least 8 characters
-              </li>
-              <li [class.valid]="passwordChecks().hasUppercase">
-                <i
-                  class="pi"
-                  [ngClass]="
-                    passwordChecks().hasUppercase
-                      ? 'pi-check-circle'
-                      : 'pi-times-circle'
-                  "
-                ></i>
-                At least one uppercase letter
-              </li>
-              <li [class.valid]="passwordChecks().hasLowercase">
-                <i
-                  class="pi"
-                  [ngClass]="
-                    passwordChecks().hasLowercase
-                      ? 'pi-check-circle'
-                      : 'pi-times-circle'
-                  "
-                ></i>
-                At least one lowercase letter
-              </li>
-              <li [class.valid]="passwordChecks().hasNumber">
-                <i
-                  class="pi"
-                  [ngClass]="
-                    passwordChecks().hasNumber
-                      ? 'pi-check-circle'
-                      : 'pi-times-circle'
-                  "
-                ></i>
-                At least one number
-              </li>
-              <li [class.valid]="passwordChecks().hasSpecial">
-                <i
-                  class="pi"
-                  [ngClass]="
-                    passwordChecks().hasSpecial
-                      ? 'pi-check-circle'
-                      : 'pi-times-circle'
-                  "
-                ></i>
-                At least one special character
-              </li>
-            </ul>
-          </ng-template>
-        </p-password>
-      </div>
+<i
+  class="p-1"
+  [class]="check.value ? 'pi pi-check-circle text-success' : 'pi pi-times-circle text-danger'"
+></i>
+          <span class="">{{ check.key | passwordCheckLabel }}</span>
+        </li>
+      }
+    </ul>
+  }
 
-      <div class="remember-me">
+  <!-- Password Validation Errors -->
+  @if (passwordControl.errors && passwordControl.touched) {
+    <div id="password-error">
+      @if (passwordControl.getError('required')) {
+        <div class="d-flex align-items-center gap-2">
+        <i class="pi pi-times-circle text-danger"></i>
+            <span class="font-medium text-danger">Oops! It is Required!</span>
+        </div>
+      }
+      @if (passwordControl.getError('pattern')) {
+        <div class="d-flex align-items-center gap-2">
+        <i class="pi pi-times-circle text-danger"></i>
+            <span class="font-medium text-danger">Oops! Please enter a valid Email!</span>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Password Success Message -->
+  @if (!passwordControl.errors && passwordControl.touched) {
+        <div class="d-flex align-items-center gap-2">
+            <i class="pi pi-check-circle text-success"></i>
+            <span class="font-medium text-success">Alright!Everything Done</span>
+      </div>
+  }
+</div>
+
+      <div class="d-flex align-items-center gap-2">
         <p-checkbox
           formControlName="rememberMe"
           binary="true"
           inputId="remember"
-          [styleClass]="'mr-2'"
         ></p-checkbox>
         <label for="remember">Remember me</label>
       </div>
 
-      <p-button
+    </form>
+
+          <p-button
         type="submit"
         label="Sign In"
         icon="pi pi-sign-in"
@@ -126,8 +135,9 @@
         styleClass="w-full mt-3"
         [disabled]="loginForm.invalid"
         [loading]="isLoading()"
+        (click)="onSubmit()"
       ></p-button>
-    </form>
+    </div>
 
     <div class="footer-links">
       <a routerLink="/forgot-password" class="link-text">Forgot password?</a>
@@ -135,6 +145,6 @@
       <a routerLink="/register" class="link-text">Create account</a>
     </div>
 
-    <p-toast position="top-center"></p-toast>
+    <p-toast position="top-right"></p-toast>
   </div>
 </main>

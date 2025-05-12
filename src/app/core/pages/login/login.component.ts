@@ -1,9 +1,10 @@
-import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -17,10 +18,10 @@ import { ToastModule } from 'primeng/toast';
 import { DividerModule } from 'primeng/divider';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
+import { PasswordCheckLabelPipe } from '../../../shared/pipes/checkpassword';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -31,9 +32,11 @@ import { TooltipModule } from 'primeng/tooltip';
     DividerModule,
     CheckboxModule,
     TooltipModule,
+    PasswordCheckLabelPipe,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  providers: [MessageService],
 })
 export class LoginComponent {
   private authService = inject(AuthService);
@@ -57,18 +60,31 @@ export class LoginComponent {
 
   errorMessage = signal<string>('');
   isLoading = signal<boolean>(false);
+
+  private loginSub: Subscription = new Subscription();
+
+  passwordFocused = signal(false);
+
   passwordChecks = signal({
     hasUppercase: false,
     hasLowercase: false,
     hasNumber: false,
-    hasSpecial: false,
     hasMinLength: false,
+    hasSpecial: false,
   });
 
-  private loginSub: Subscription = new Subscription();
+  ngOnInit(): void {
+    this.passwordControl.valueChanges.subscribe(() => {
+      this.updatePasswordStrength();
+    });
+  }
+
+  get passwordControl(): FormControl {
+    return this.loginForm.get('password') as FormControl;
+  }
 
   updatePasswordStrength(): void {
-    const password = this.password?.value || '';
+    const password = this.passwordControl.value || '';
     this.passwordChecks.set({
       hasUppercase: /[A-Z]/.test(password),
       hasLowercase: /[a-z]/.test(password),
