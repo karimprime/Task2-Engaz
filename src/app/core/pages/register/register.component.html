@@ -1,1 +1,306 @@
-<p>register works!</p>
+<main
+  class="d-flex align-items-center justify-content-center min-vh-100 bg-light p-3"
+>
+  <div class="card shadow-lg p-4 w-100" style="max-width: 32rem">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-success">Engaz HR</h2>
+      <p class="text-secondary">
+        Create Your Account & Join our platform today
+      </p>
+    </div>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="registerSubmit()"
+      class="d-flex flex-column gap-3"
+    >
+      <!-- Name -->
+      <div class="d-flex flex-column gap-2">
+        <label for="name" class="form-label fw-medium required"
+          >Full Name</label
+        >
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Enter your full name"
+          class="w-100"
+          [class.p-invalid]="
+            registerForm.get('name')?.invalid &&
+            (registerForm.get('name')?.dirty ||
+              registerForm.get('name')?.touched)
+          "
+        />
+        <!-- Name Validation -->
+        @if(registerForm.get('name')?.errors &&
+        registerForm.get('name')?.touched){
+        <div id="name-error">
+          @if(registerForm.get('name')?.getError('required')){
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops! It is Required!</span>
+          </div>
+          } @else if(registerForm.get('name')?.getError('minlength')){
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops! it is less than 5 Characters!</span>
+          </div>
+          } @else if(registerForm.get('name')?.getError('maxlength')){
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops!it is more than 30 Characters!</span>
+          </div>
+          }
+        </div>
+        } @if (registerForm.get('name')?.errors == null &&
+        registerForm.get('name')?.touched) {
+        <div class="d-flex align-items-center gap-2 text-success">
+          <i class="pi pi-check-circle"></i>
+          <span class="fw-medium">Alright! Everything Done</span>
+        </div>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="d-flex flex-column gap-2">
+        <label for="email" class="form-label fw-medium required">Email</label>
+        <input
+          pInputText
+          id="email"
+          formControlName="email"
+          placeholder="your@email.com"
+          class="w-100"
+          [class.p-invalid]="
+            registerForm.get('email')?.invalid &&
+            (registerForm.get('email')?.dirty ||
+              registerForm.get('email')?.touched)
+          "
+        />
+        <!-- Email Validation -->
+        @if (registerForm.get('email')?.errors &&
+        registerForm.get('email')?.touched) {
+        <div id="email-error">
+          @if (registerForm.get('email')?.getError('required')) {
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops! It is Required!</span>
+          </div>
+          } @if (registerForm.get('email')?.getError('email')) {
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops! Please enter a valid Email!</span>
+          </div>
+          }
+        </div>
+        } @if (!registerForm.get('email')?.errors &&
+        registerForm.get('email')?.touched) {
+        <div class="d-flex align-items-center gap-2 text-success">
+          <i class="pi pi-check-circle"></i>
+          <span class="fw-medium">Alright! Everything Done</span>
+        </div>
+        }
+      </div>
+
+      <!-- Phone -->
+      <div class="d-flex flex-column gap-2">
+        <label for="phone" class="form-label fw-medium required"
+          >Phone Number</label
+        >
+        <input
+          pInputText
+          id="phone"
+          formControlName="phone"
+          placeholder="01XXXXXXXXX"
+          class="w-100"
+          [class.p-invalid]="
+            registerForm.get('phone')?.invalid &&
+            (registerForm.get('phone')?.dirty ||
+              registerForm.get('phone')?.touched)
+          "
+        />
+        <!-- Phone Validation -->
+        @if(registerForm.get('phone')?.errors &&
+        registerForm.get('phone')?.touched){
+
+        <div id="phone-error">
+          @if(registerForm.get('phone')?.getError('required')){
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops! It is Required!</span>
+          </div>
+          } @else if(registerForm.get('phone')?.getError('pattern')){
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium"
+              >Please enter a valid Egyptian phone number!</span
+            >
+          </div>
+          }
+        </div>
+        } @if (registerForm.get('phone')?.errors == null &&
+        registerForm.get('phone')?.touched){
+        <div class="d-flex align-items-center gap-2 text-success">
+          <i class="pi pi-check-circle"></i>
+          <span class="fw-medium">Alright! Everything Done</span>
+        </div>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="d-flex flex-column gap-2">
+        <label for="password" class="form-label fw-medium required"
+          >Password</label
+        >
+        <p-password
+          formControlName="password"
+          inputId="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          (onFocus)="passwordFocused.set(true)"
+          (onBlur)="passwordFocused.set(false)"
+          placeholder="Enter your password"
+          styleClass="w-100"
+          [inputStyleClass]="'w-100'"
+          [class.p-invalid]="
+            passwordControl.invalid &&
+            (passwordControl.dirty || passwordControl.touched)
+          "
+        ></p-password>
+
+        <!-- Password Strength -->
+        <!-- Password Strength -->
+        @if (passwordFocused()) {
+        <ul class="list-unstyled small">
+          @for (check of passwordChecks() | keyvalue; track check.key) {
+          <li
+            class="d-flex align-items-center"
+            [class.text-success]="check.value"
+            [class.text-danger]="!check.value"
+          >
+            <i
+              class="p-1"
+              [class]="
+                check.value
+                  ? 'pi pi-check-circle text-success'
+                  : 'pi pi-times-circle text-danger'
+              "
+            ></i>
+            <span>{{ check.key | passwordCheckLabel }}</span>
+          </li>
+          }
+        </ul>
+        }
+
+        <!-- Password Errors -->
+        @if (passwordControl.errors && passwordControl.touched) {
+        <div id="password-error">
+          @if (passwordControl.getError('required')) {
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops! It is Required!</span>
+          </div>
+          } @if (passwordControl.getError('pattern')) {
+          <div class="d-flex align-items-center gap-2 text-danger">
+            <i class="pi pi-times-circle"></i>
+            <span class="fw-medium">Oops! Please enter a valid password!</span>
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Password Success -->
+        @if (!passwordControl.errors && passwordControl.touched) {
+        <div class="d-flex align-items-center gap-2 text-success">
+          <i class="pi pi-check-circle"></i>
+          <span class="fw-medium">Alright! Everything Done</span>
+        </div>
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="d-flex flex-column gap-2">
+        <label for="rePassword" class="form-label fw-medium required"
+          >Confirm Password</label
+        >
+        <p-password
+          formControlName="rePassword"
+          inputId="rePassword"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Confirm your password"
+          styleClass="w-100"
+          [inputStyleClass]="'w-100'"
+          [class.p-invalid]="
+            registerForm.get('rePassword')?.invalid &&
+            (registerForm.get('rePassword')?.dirty ||
+              registerForm.get('rePassword')?.touched)
+          "
+        ></p-password>
+        <!-- Phone Validation -->
+        @if(registerForm.errors && registerForm.touched &&
+        registerForm.get('rePassword')?.touched){
+        <div class="d-flex align-items-center gap-2 text-danger">
+          <i class="pi pi-times-circle"></i>
+          <span class="fw-medium">Not Matched Password!</span>
+        </div>
+        } @else if(registerForm.get('rePassword')?.getError('required') &&
+        registerForm.get('rePassword')?.touched){
+        <div class="d-flex align-items-center gap-2 text-danger">
+          <i class="pi pi-times-circle"></i>
+          <span class="fw-medium">Oops! It is Required!</span>
+        </div>
+        } @if (registerForm.errors == null &&
+        registerForm.get('rePassword')?.touched){
+        <div class="d-flex align-items-center gap-2 text-success">
+          <i class="pi pi-check-circle"></i>
+          <span class="fw-medium">Alright! Everything Done</span>
+        </div>
+        }
+      </div>
+
+      <!-- Terms Checkbox -->
+      <div class="d-flex align-items-start gap-2">
+        <p-checkbox
+          formControlName="agree"
+          [binary]="true"
+          inputId="terms"
+        ></p-checkbox>
+        <label for="terms" class="form-check-label small">
+          I agree to the
+          <span class="text-success">Terms of Service</span> and
+          <span class="text-success">Privacy Policy</span>
+        </label>
+      </div>
+      @if (agreeControl.invalid && agreeControl.touched) {
+
+      <div class="d-flex align-items-center gap-2 text-danger">
+        <i class="pi pi-times-circle"></i>
+        <span class="fw-medium">You must accept the terms and conditions</span>
+      </div>
+      }
+
+      <!-- Submit Button -->
+      <p-button
+        type="submit"
+        label="Register"
+        icon="pi pi-user-plus"
+        iconPos="right"
+        [raised]="true"
+        styleClass="w-100 mt-2"
+        [disabled]="registerForm.invalid"
+        [loading]="isLoading()"
+      ></p-button>
+
+      <div class="text-center mt-3">
+        <span class="text-secondary">Already have an account?</span>
+        <a
+          routerLink="/auth-layout/login"
+          class="ms-2 text-success fw-medium text-decoration-none"
+          >Sign In</a
+        >
+      </div>
+    </form>
+
+    <p-toast position="top-right"></p-toast>
+  </div>
+</main>

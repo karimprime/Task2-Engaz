@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
@@ -33,6 +33,7 @@ import { PasswordCheckLabelPipe } from '../../../shared/pipes/checkpassword';
     CheckboxModule,
     TooltipModule,
     PasswordCheckLabelPipe,
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
@@ -40,24 +41,18 @@ import { PasswordCheckLabelPipe } from '../../../shared/pipes/checkpassword';
 })
 export class LoginComponent {
   private authService = inject(AuthService);
-  private fb = inject(FormBuilder);
   private router = inject(Router);
   private messageService = inject(MessageService);
 
-  loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(
-          '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
-        ),
-      ],
-    ],
-    rememberMe: [false],
+  loginForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.pattern(
+        '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
+      ),
+    ]),
   });
-
   errorMessage = signal<string>('');
   isLoading = signal<boolean>(false);
 
@@ -94,34 +89,6 @@ export class LoginComponent {
     });
   }
 
-  get email() {
-    return this.loginForm.get('email');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
-  }
-
-  getEmailError(): string {
-    if (this.email?.invalid && (this.email?.dirty || this.email?.touched)) {
-      if (this.email.errors?.['required']) return 'Email is required';
-      if (this.email.errors?.['email']) return 'Please enter a valid email';
-    }
-    return '';
-  }
-
-  getPasswordError(): string {
-    if (
-      this.password?.invalid &&
-      (this.password?.dirty || this.password?.touched)
-    ) {
-      if (this.password.errors?.['required']) return 'Password is required';
-      if (this.password.errors?.['pattern'])
-        return 'Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character';
-    }
-    return '';
-  }
-
   onSubmit(): void {
     if (this.loginForm.invalid || this.isLoading()) return;
 
@@ -138,6 +105,11 @@ export class LoginComponent {
         if ('token' in res && res.message === 'success') {
           localStorage.setItem('userToken', res.token);
           this.router.navigate(['/dashboard']);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Login Success',
+          });
         }
       },
       error: (err) => {

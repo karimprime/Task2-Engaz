@@ -1,150 +1,163 @@
-<main class="main-container">
-  <div class="login-card">
-    <div class="card-header">
-      <h2 class="app-title">Engaz HR</h2>
-      <p class="app-subtitle">Human Resources Management System</p>
+<section
+  class="d-flex align-items-center justify-content-center min-vh-100 bg-light p-3"
+>
+  <div class="card shadow-lg p-4 w-100" style="max-width: 28rem">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-success">Engaz HR</h2>
+      <p class="text-secondary">Human Resources Management System</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <form
-      class="form-container"
-      [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()"
-    >
-      <div class="d-flex flex-column gap-2">
-        <label for="email" class="fw-medium required">
-          Email
-        </label>
-        <input
-          pInputText
-          id="email"
-          formControlName="email"
-          placeholder="username@engaz.com"
-          [class]="{
-            'p-invalid': loginForm.get('email')?.invalid &&
-              (loginForm.get('email')?.dirty ||
-                loginForm.get('email')?.touched)
-          }"
-        />
+    <div class="row">
+      <form
+        class="col-12 d-flex flex-column gap-3"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="d-flex flex-column gap-2">
+          <label for="email" class="form-label fw-medium required">Email</label>
+          <input
+            pInputText
+            id="email"
+            formControlName="email"
+            placeholder="username@engaz.com"
+            class="form-control"
+            [class.p-invalid]="
+              loginForm.get('email')?.invalid &&
+              (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+            "
+          />
 
-                <!-- Email Validation Messages -->
-      @if (loginForm.get('email')?.errors && loginForm.get('email')?.touched) {
-      <div id="email-error">
-        @if (loginForm.get('email')?.getError('required')) {
-        <div class="d-flex align-items-center gap-2">
-        <i class="pi pi-times-circle text-danger"></i>
-            <span class="font-medium text-danger">Oops! It is Required!</span>
+          <!-- Email Validation -->
+          @if (loginForm.get('email')?.errors &&
+          loginForm.get('email')?.touched) {
+          <div id="email-error">
+            @if (loginForm.get('email')?.getError('required')) {
+            <div class="d-flex align-items-center gap-2 text-danger">
+              <i class="pi pi-times-circle"></i>
+              <span class="fw-medium">Oops! It is Required!</span>
+            </div>
+            } @if (loginForm.get('email')?.getError('email')) {
+            <div class="d-flex align-items-center gap-2 text-danger">
+              <i class="pi pi-times-circle"></i>
+              <span class="fw-medium">Oops! Please enter a valid Email!</span>
+            </div>
+            }
+          </div>
+          } @if (!loginForm.get('email')?.errors &&
+          loginForm.get('email')?.touched) {
+          <div class="d-flex align-items-center gap-2 text-success">
+            <i class="pi pi-check-circle"></i>
+            <span class="fw-medium">Alright! Everything Done</span>
+          </div>
+          }
         </div>
-        }
-        @if (loginForm.get('email')?.getError('email')) {
-            <div class="d-flex align-items-center gap-2">
-            <i class="pi pi-times-circle text-danger"></i>
-            <span class="font-medium text-danger">Oops! Please enter a valid Email!</span>
+
+        <!-- Password Input -->
+        <div class="d-flex flex-column gap-2">
+          <label for="password" class="form-label fw-medium required"
+            >Password</label
+          >
+
+          <p-password
+            formControlName="password"
+            inputId="password"
+            [toggleMask]="true"
+            [feedback]="false"
+            (onFocus)="passwordFocused.set(true)"
+            (onBlur)="passwordFocused.set(false)"
+            placeholder="Enter Your Password"
+            styleClass="w-100"
+            [class.p-invalid]="
+              passwordControl.invalid &&
+              (passwordControl.dirty || passwordControl.touched)
+            "
+          ></p-password>
+
+          <!-- Password Strength -->
+          @if (passwordFocused()) {
+          <ul class="list-unstyled small">
+            @for (check of passwordChecks() | keyvalue; track check.key) {
+            <li
+              class="d-flex align-items-center"
+              [class.text-success]="check.value"
+              [class.text-danger]="!check.value"
+            >
+              <i
+                class="p-1"
+                [class]="
+                  check.value
+                    ? 'pi pi-check-circle text-success'
+                    : 'pi pi-times-circle text-danger'
+                "
+              ></i>
+              <span>{{ check.key | passwordCheckLabel }}</span>
+            </li>
+            }
+          </ul>
+          }
+
+          <!-- Password Errors -->
+          @if (passwordControl.errors && passwordControl.touched) {
+          <div id="password-error">
+            @if (passwordControl.getError('required')) {
+            <div class="d-flex align-items-center gap-2 text-danger">
+              <i class="pi pi-times-circle"></i>
+              <span class="fw-medium">Oops! It is Required!</span>
+            </div>
+            } @if (passwordControl.getError('pattern')) {
+            <div class="d-flex align-items-center gap-2 text-danger">
+              <i class="pi pi-times-circle"></i>
+              <span class="fw-medium"
+                >Oops! Please enter a valid password!</span
+              >
+            </div>
+            }
+          </div>
+          }
+
+          <!-- Password Success -->
+          @if (!passwordControl.errors && passwordControl.touched) {
+          <div class="d-flex align-items-center gap-2 text-success">
+            <i class="pi pi-check-circle"></i>
+            <span class="fw-medium">Alright! Everything Done</span>
+          </div>
+          }
         </div>
-        }
-      </div>
-      }
-                  <!-- Email Success Message -->
-      @if (!loginForm.get('email')?.errors && loginForm.get('email')?.touched) {
+
         <div class="d-flex align-items-center gap-2">
-            <i class="pi pi-check-circle text-success"></i>
-            <span class="font-medium text-success">Alright!Everything Done</span>
-      </div>
-      }
-      </div>
-
-<!-- password input -->
-<div class="d-flex flex-column gap-2">
-  <label for="password" class="fw-medium required">Password</label>
-
-  <p-password
-    formControlName="password"
-    inputId="password"
-    [toggleMask]="true"
-    [feedback]="false"
-    (onFocus)="passwordFocused.set(true)"
-    (onBlur)="passwordFocused.set(false)"
-    placeholder="Enter Your Password"
-    [class]="{
-      'p-invalid': passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)
-    }"
-  ></p-password>
-
-  <!-- Password Strength Checks -->
-  @if (passwordFocused()) {
-    <ul>
-      @for (check of passwordChecks() | keyvalue; track check.key) {
-        <li
-          class="d-flex align-items-center"
-          [class]="check.value ? ' text-success' : ' text-danger'"
-        >
-<i
-  class="p-1"
-  [class]="check.value ? 'pi pi-check-circle text-success' : 'pi pi-times-circle text-danger'"
-></i>
-          <span class="">{{ check.key | passwordCheckLabel }}</span>
-        </li>
-      }
-    </ul>
-  }
-
-  <!-- Password Validation Errors -->
-  @if (passwordControl.errors && passwordControl.touched) {
-    <div id="password-error">
-      @if (passwordControl.getError('required')) {
-        <div class="d-flex align-items-center gap-2">
-        <i class="pi pi-times-circle text-danger"></i>
-            <span class="font-medium text-danger">Oops! It is Required!</span>
+          <p-checkbox binary="true" inputId="remember"></p-checkbox>
+          <label for="remember">Remember me</label>
         </div>
-      }
-      @if (passwordControl.getError('pattern')) {
-        <div class="d-flex align-items-center gap-2">
-        <i class="pi pi-times-circle text-danger"></i>
-            <span class="font-medium text-danger">Oops! Please enter a valid Email!</span>
-        </div>
-      }
-    </div>
-  }
 
-  <!-- Password Success Message -->
-  @if (!passwordControl.errors && passwordControl.touched) {
-        <div class="d-flex align-items-center gap-2">
-            <i class="pi pi-check-circle text-success"></i>
-            <span class="font-medium text-success">Alright!Everything Done</span>
-      </div>
-  }
-</div>
-
-      <div class="d-flex align-items-center gap-2">
-        <p-checkbox
-          formControlName="rememberMe"
-          binary="true"
-          inputId="remember"
-        ></p-checkbox>
-        <label for="remember">Remember me</label>
-      </div>
-
-    </form>
-
+        <div class="d-flex justify-content-center">
           <p-button
-        type="submit"
-        label="Sign In"
-        icon="pi pi-sign-in"
-        iconPos="right"
-        [raised]="true"
-        styleClass="w-full mt-3"
-        [disabled]="loginForm.invalid"
-        [loading]="isLoading()"
-        (click)="onSubmit()"
-      ></p-button>
-    </div>
+            type="submit"
+            label="Sign In"
+            icon="pi pi-sign-in"
+            iconPos="right"
+            [raised]="true"
+            [disabled]="loginForm.invalid"
+            [loading]="isLoading()"
+            (click)="onSubmit()"
+          ></p-button>
+        </div>
 
-    <div class="footer-links">
-      <a routerLink="/forgot-password" class="link-text">Forgot password?</a>
-      <span class="text-color-secondary">|</span>
-      <a routerLink="/register" class="link-text">Create account</a>
+        <div class="d-flex justify-content-center gap-2 mt-3 small">
+          <a
+            routerLink="/forgot-password"
+            class="text-success text-decoration-none"
+            >Forgot password?</a
+          >
+          <span class="text-success">|</span>
+          <a
+            routerLink="/auth-layout/register"
+            class="text-success text-decoration-none"
+            >Create account</a
+          >
+        </div>
+      </form>
     </div>
 
     <p-toast position="top-right"></p-toast>
   </div>
-</main>
+</section>

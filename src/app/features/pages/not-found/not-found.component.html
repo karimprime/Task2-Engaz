@@ -1,1 +1,30 @@
-<p>not-found works!</p>
+<section
+  class="d-flex flex-column align-items-center justify-content-center min-vh-100 text-center bg-light px-3"
+>
+  <!-- Error Image -->
+  <img
+    src="/images/404-page-not-found.svg"
+    alt="Page not found illustration"
+    width="480"
+    height="360"
+    class="img-fluid mb-4 animate__animated animate__fadeIn"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <!-- Error Message -->
+  <h1 class="display-4 fw-bold text-dark mb-3">Oops! Page Not Found</h1>
+  <p class="lead text-secondary mb-4 w-100" style="max-width: 600px">
+    The page you are looking for might have been removed or is temporarily
+    unavailable.
+  </p>
+
+  <!-- Back to Home Button -->
+  <p-button
+    label="Back To Home"
+    icon="pi pi-home"
+    iconPos="left"
+    [styleClass]="'p-button-lg p-button-primary shadow-sm px-4 py-2'"
+    routerLink="/"
+  ></p-button>
+</section>

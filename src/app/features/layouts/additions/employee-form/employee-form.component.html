@@ -4,10 +4,21 @@
   <div class="w-100">
     <!-- Header section with title and description -->
     <header class="header-container background-header rounded-top-4">
-      <h2 class="fontFamily black-color header-title">Add Employee</h2>
-      <p class="fontFamily gray-color header-description">
-        Manage your team members and their account permissions here.
-      </p>
+      <div class="d-flex justify-content-between">
+        <div>
+          <h2 class="fontFamily black-color header-title">Add Employee</h2>
+          <p class="fontFamily gray-color header-description">
+            Manage your team members and their account permissions here.
+          </p>
+        </div>
+        <div>
+          <p-button
+            icon="pi pi-sign-out"
+            (click)="logout()"
+            severity="danger"
+          ></p-button>
+        </div>
+      </div>
     </header>
 
     <!-- Employee form using Angular reactive forms -->

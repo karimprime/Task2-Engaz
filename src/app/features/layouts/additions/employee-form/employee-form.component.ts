@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -10,7 +10,8 @@ import {
 } from '@angular/forms';
 import { EnglishOnlyDirective } from '../../../../core/directives/english-only.directive';
 import { ArabicOnlyDirective } from '../../../../core/directives/arabic-only.directive';
-
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 interface Employee {
   nameEn: string;
   nameAr: string;
@@ -30,6 +31,7 @@ interface Employee {
     ReactiveFormsModule,
     EnglishOnlyDirective,
     ArabicOnlyDirective,
+    ButtonModule,
   ],
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.scss'],
@@ -38,6 +40,8 @@ export class EmployeeFormComponent {
   @Output() employeeAdded = new EventEmitter<Employee>();
 
   employeeForm: FormGroup;
+
+  private router = inject(Router);
 
   constructor(private fb: FormBuilder) {
     this.employeeForm = this.fb.group({
@@ -101,5 +105,11 @@ export class EmployeeFormComponent {
 
   onClear() {
     this.employeeForm.reset();
+  }
+
+  logout(): void {
+    localStorage.clear();
+
+    this.router.navigate(['/auth-layout/login']);
   }
 }
