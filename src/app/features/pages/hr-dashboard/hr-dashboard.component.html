@@ -1,0 +1,243 @@
+<div class="card">
+  <p-toast></p-toast>
+  <p-table
+    #dt
+    [value]="requests"
+    [(selection)]="selectedRequests"
+    dataKey="request_id"
+    [rowHover]="true"
+    [rows]="rows"
+    [first]="first"
+    [totalRecords]="totalRecords"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [loading]="loading"
+    [lazy]="true"
+    [paginator]="true"
+    (onPage)="onPageChange($event)"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [filterDelay]="0"
+    [globalFilterFields]="[
+      'full_name',
+      'request_type',
+      'request_value',
+      'description'
+    ]"
+    [paginatorDropdownAppendTo]="'body'"
+    [alwaysShowPaginator]="true"
+    [responsiveLayout]="'scroll'"
+  >
+    <!-- TABLE CAPTION / TABS -->
+    <ng-template pTemplate="caption">
+      <div class="table-caption-container">
+        <h2 class="title-tabs black-color fontFamily">Requests</h2>
+        <div class="tabs-of-tables tabs-themes fontFamily">
+          @for ( tab of [ { id: 'all', label: 'All', count: allCount }, { id:
+          'pending', label: 'Pending', count: pendingCount }, { id: 'approved',
+          label: 'Approved', count: approvedCount }, { id: 'declined', label:
+          'Declined', count: declinedCount } ]; track tab.id ) {
+          <button
+            class="btn-tabs btn-tabs-color fontFamily"
+            [class.active]="activeTab === tab.id"
+            (click)="onTabChange(tab.id)"
+          >
+            {{ tab.label }}
+            <span class="badge-tabs-themes badge">{{ tab.count }}</span>
+          </button>
+          }
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- TABLE HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-table-header-color fontFamily">
+          <span class="text-table-header-color fontFamily">#</span>
+        </th>
+        <th style="min-width: 14rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Employee
+          </div>
+        </th>
+        <th pSortableColumn="request_type" style="min-width: 14rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Request Type
+            <p-sortIcon field="request_type"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="sub_type" style="min-width: 14rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Sub-Type
+            <p-sortIcon field="sub_type"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="request_value" style="min-width: 10rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Value
+            <p-sortIcon field="request_value"></p-sortIcon>
+          </div>
+        </th>
+        <th style="min-width: 10rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Request Date
+          </div>
+        </th>
+        <th style="min-width: 10rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Creation Date
+          </div>
+        </th>
+        <th pSortableColumn="status" style="min-width: 10rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Status
+            <p-sortIcon field="status"></p-sortIcon>
+          </div>
+        </th>
+        <th style="min-width: 10rem">
+          <div
+            class="flex justify-between items-center text-table-header-color fontFamily"
+          >
+            Actions
+          </div>
+        </th>
+      </tr>
+    </ng-template>
+
+    <!-- TABLE BODY -->
+    <ng-template pTemplate="body" let-request>
+      <tr>
+        <td>
+          <div class="d-flex gap-3 align-items-center">
+            <p-tableCheckbox [value]="request"></p-tableCheckbox>
+            <span class="black-color fontFamily Text-Table">{{
+              request.status
+            }}</span>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            @if (request.hr_profile_photo || request.profile_photo) {
+            <img
+              [src]="request.hr_profile_photo || request.profile_photo"
+              alt="Employee photo"
+              width="32"
+              style="vertical-align: middle; border-radius: 50%"
+            />
+            } @else {
+            <div class="avatar-placeholder">
+              <i class="pi pi-user"></i>
+            </div>
+            }
+            <span class="m-2 fontFamily Text-Table">{{
+              request.full_name
+            }}</span>
+          </div>
+        </td>
+        <td>
+          <span
+            [class]="getRequestTypeClass(request.request_type)"
+            class="badge-default fontFamily"
+          >
+            @switch (request.request_type) { @case ('loan') {
+            <i class="bi bi-wallet2"></i>
+            {{ request.request_type | titlecase }}
+            } @case ('vacation') {
+            <i class="bi bi-umbrella"></i>
+            {{ request.request_type | titlecase }}
+
+            } @case ('excuse') {
+            <i class="bi bi-emoji-frown"></i>
+            {{ request.request_type | titlecase }}
+
+            } @case ('overtime') {
+            <i class="bi bi-hourglass-split"></i>
+            {{ request.request_type | titlecase }}
+            } @default {
+            {{ request.request_type | titlecase }}
+            } }
+          </span>
+        </td>
+        <td class="fontFamily Text-Table">
+          @if (['urgent', 'normal', 'sick',
+          'unpaid'].includes(request.request_value)) {
+          {{ request.request_value }}
+          } @else { -- }
+        </td>
+        <td class="fontFamily Text-Table">
+          @switch (request.request_type) { @case ('loan') { @if
+          (isNumeric(request.request_value)) {
+          <span>{{ request.request_value | number : "1.0-0" }} LE</span>
+          } @else {
+          <span>--</span>
+          } } @case ('excuse') { @if (isNumeric(request.request_value)) {
+          <span>{{ request.request_value | number : "1.1-1" }} H</span>
+          } @else {
+          <span>--</span>
+          } } @case ('overtime') { @if (isNumeric(request.request_value)) {
+          <span>{{ request.request_value | number : "1.1-1" }} H</span>
+          } @else {
+          <span>--</span>
+          } } @case ('vacation') { @if (request.count_days_off == 0 ||
+          request.count_days_off === null) {
+          <span>--</span>
+          } @else {
+          <span>{{ request.count_days_off }} D</span>
+          } } @default {
+          <span>--</span>
+          } }
+        </td>
+        <td class="fontFamily Text-Table">
+          {{ request.request_date_from | date : "dd MMM yyyy" }}
+        </td>
+        <td class="fontFamily Text-Table">
+          {{ request.creation_date | date : "yyyy-MM-dd HH:mm:ss" }}
+        </td>
+        <td>
+          <p-tag
+            class="fontFamily"
+            [value]="getStatusLabel(request.status)"
+            [style]="{ color: getStatusColor(request.status) }"
+          ></p-tag>
+        </td>
+        <td style="text-align: center">
+          <div class="d-flex align-items-center gap-3">
+            <button class="action-buttons btn-preview fontFamily">
+              Preview
+            </button>
+            <div class="d-flex align-items-center gap-3">
+              <button class="btn-checker action-buttons fontFamily">
+                <i class="pi pi-check"></i>
+              </button>
+
+              <button class="action-buttons btn-x fontFamily">
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- EMPTY MESSAGE -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="9">No requests found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

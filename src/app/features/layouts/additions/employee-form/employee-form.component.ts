@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { EnglishOnlyDirective } from '../../../../core/directives/english-only.directive';
 import { ArabicOnlyDirective } from '../../../../core/directives/arabic-only.directive';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 interface Employee {
   nameEn: string;
@@ -32,6 +32,7 @@ interface Employee {
     EnglishOnlyDirective,
     ArabicOnlyDirective,
     ButtonModule,
+    RouterLink,
   ],
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.scss'],

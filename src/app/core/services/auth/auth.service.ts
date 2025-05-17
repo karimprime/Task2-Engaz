@@ -39,15 +39,15 @@ export class AuthService {
   }
 
   saveUserToken(token: string): void {
-    localStorage.setItem('userToken', token);
+    localStorage.setItem('Authorization', token);
   }
 
   getUserToken(): string | null {
-    return localStorage.getItem('userToken');
+    return localStorage.getItem('Authorization');
   }
 
   removeUserToken(): void {
-    localStorage.removeItem('userToken');
+    localStorage.removeItem('Authorization');
   }
 
   isAuthenticated(): boolean {

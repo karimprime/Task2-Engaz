@@ -103,7 +103,7 @@ export class LoginComponent {
     this.loginSub = this.authService.signIn(credentials).subscribe({
       next: (res) => {
         if ('token' in res && res.message === 'success') {
-          localStorage.setItem('userToken', res.token);
+          localStorage.setItem('Authorization', res.token);
           this.router.navigate(['/dashboard']);
           this.messageService.add({
             severity: 'success',
