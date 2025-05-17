@@ -1,0 +1,213 @@
+/* Host Component Styles */
+:host {
+  display: block;
+}
+
+.tabs-of-tables {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 100%;
+  flex-grow: 1;
+}
+
+/* Tab Container */
+.tabs-of-tables {
+  padding: 0.25rem;
+  display: flex;
+  margin-bottom: 1rem;
+  border-radius: 0.37rem;
+  border: 3px solid #f2f4f7;
+}
+
+/* Tab Buttons */
+.btn-tabs {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.87rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  transition: all 0.2s ease;
+
+  &.active {
+    background: #ffffff;
+    color: #344054;
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.1);
+  }
+
+  &:hover {
+    background-color: #ffffff;
+    color: #344054;
+  }
+}
+
+/* Badge Styles */
+.badge {
+  color: #344054;
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.12rem;
+}
+
+.badge-default {
+  background: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.12rem;
+}
+
+/* Card Styles */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background: #fff;
+}
+
+/* Typography */
+.title-tabs {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.87rem;
+}
+
+.Text-Table {
+  font-weight: 500;
+  font-size: 0.87rem;
+  line-height: 1.25rem;
+}
+
+/* Avatar */
+.avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+}
+
+/* Table Styles */
+.p-table {
+  font-size: 0.9rem;
+
+  th {
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+}
+
+/* Action Buttons */
+.action-buttons {
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.87rem;
+  line-height: 1.25rem;
+  padding: 0.62rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.btn-preview {
+  background-color: #029873;
+  color: #ffffff;
+
+  &:hover {
+    background-color: #067559;
+  }
+}
+
+.btn-checker {
+  background-color: #ffffff;
+  color: #344054;
+  border: 2px solid #d0d5dd;
+}
+
+.btn-x {
+  background-color: #ffffff;
+  color: #b42318;
+  border: 2px solid #fda29b;
+}
+
+/* PrimeNG Deep Styles */
+:host ::ng-deep {
+  .table-caption-container {
+    max-width: 100%;
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    gap: 1rem;
+    box-sizing: border-box;
+  }
+  /* Paginator */
+  .p-paginator {
+    .p-paginator-current {
+      margin-left: auto;
+    }
+  }
+
+  /* Table Header */
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Calendar */
+  .p-calendar .p-datepicker {
+    min-width: 25rem;
+
+    td {
+      font-weight: 400;
+    }
+  }
+
+  /* Data Table */
+  .p-datatable.p-datatable-customers {
+    .p-datatable-header {
+      padding: 1rem;
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    .p-paginator {
+      padding: 1rem;
+    }
+
+    .p-datatable-thead > tr > th {
+      text-align: left;
+    }
+
+    .p-datatable-tbody > tr > td {
+      cursor: auto;
+    }
+
+    .p-dropdown-label:not(.p-placeholder) {
+      text-transform: uppercase;
+    }
+  }
+
+  /* Utility Class */
+  .p-w-100 {
+    width: 100%;
+  }
+
+  /* Responsive Table - Hide column titles by default */
+  .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+    display: none;
+  }
+}

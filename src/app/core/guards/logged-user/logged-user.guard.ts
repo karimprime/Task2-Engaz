@@ -10,7 +10,7 @@ export const loggedGuard: CanActivateFn = (route, state): boolean | UrlTree => {
     return true;
   }
 
-  if (localStorage.getItem('userToken')) {
+  if (localStorage.getItem('Authorization')) {
     return router.createUrlTree(['/dashboard'], {
       queryParamsHandling: 'preserve'
     });

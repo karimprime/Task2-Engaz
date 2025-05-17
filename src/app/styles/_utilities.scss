@@ -31,3 +31,72 @@
 .background-header {
   background-color: variables.$header-color;
 }
+
+//colors badges
+
+.loan-color {
+  color: variables.$loan-color;
+  border: 2px solid variables.$loan-color;
+}
+
+.excuse-color {
+  color: variables.$excuse-color;
+  border: 2px solid variables.$excuse-color;
+}
+
+.overtime-color {
+  color: variables.$overtime-color;
+  border: 2px solid variables.$overtime-color;
+}
+
+.vacation-color {
+  color: variables.$vacation-color;
+  border: 2px solid variables.$vacation-color;
+}
+
+.default-color {
+  color: variables.$default-color;
+  border: 2px solid variables.$default-color;
+}
+
+//colors Tabs
+
+.tabs-themes {
+  background-color: variables.$bg-tabs-color;
+  color: variables.$text-tabs-color;
+}
+
+.btn-tabs-color {
+  background-color: variables.$bg-tabs-color;
+  color: variables.$text-tabs-color;
+}
+
+.badge-tabs-themes {
+  background-color: variables.$bg-badge-tabs-color;
+  color: variables.$text-badge-tabs-color;
+}
+
+//table header
+.text-table-header-color {
+  color: variables.$text-table-header-color;
+}
+
+//Status Color
+
+.p-tag {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+
+  .Pending-color {
+    color: variables.$Pending-color; // or your color variable
+  }
+
+  .Approved-color {
+    color: variables.$Approved-color; // or your color variable
+  }
+
+  .Declined-color {
+    color: variables.$Declined-color; // or your color variable
+  }
+}

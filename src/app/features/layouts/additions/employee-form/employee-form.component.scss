@@ -193,3 +193,76 @@ button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 1.5rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .input-field-wrapper,
+  .Religion-field-wrapper {
+    min-width: 100% !important;
+  }
+
+  .input-icon-wrapper input,
+  .input-icon-wrapper select {
+    padding-left: 2.2rem !important;
+  }
+
+  .buttons-form {
+    width: 100%;
+  }
+
+  .empty-space {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-container {
+    text-align: center;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .header-description {
+    font-size: 0.9rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+  }
+
+  .personal-info-title {
+    font-size: 1.1rem;
+  }
+
+  .input-icon-wrapper input,
+  .input-icon-wrapper select {
+    height: 2.5rem;
+    font-size: 0.9rem;
+  }
+
+  .input-icon {
+    font-size: 1rem !important;
+  }
+
+  .form-label {
+    font-size: 0.8rem;
+  }
+}
+
+/* Ensure form doesn't get too wide on large screens */
+@media (min-width: 1400px) {
+  .form-section {
+    max-width: 1200px;
+  }
+}

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { EmployeeRegistrationComponent } from '../../pages/employee-registration/employee-registration.component';
-import { ButtonModule } from 'primeng/button';
-
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [EmployeeRegistrationComponent , ButtonModule],
+  imports: [RouterOutlet],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
