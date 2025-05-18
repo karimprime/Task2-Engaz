@@ -135,12 +135,19 @@
   border: 2px solid #d0d5dd;
 }
 
+.btn-checker:hover {
+  background-color: #f9fafb;
+}
+
 .btn-x {
   background-color: #ffffff;
   color: #b42318;
   border: 2px solid #fda29b;
 }
 
+.btn-x:hover {
+  background-color: #fef2f2;
+}
 /* PrimeNG Deep Styles */
 :host ::ng-deep {
   .table-caption-container {
