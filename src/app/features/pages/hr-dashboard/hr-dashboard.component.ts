@@ -27,6 +27,7 @@ import { RequestService } from '../../../shared/services/hrrequest/hrrequest.ser
   styleUrls: ['./hr-dashboard.component.scss'],
 })
 export class HrDashboardComponent implements OnInit {
+  // Data properties
   requests: any[] = [];
   selectedRequests: any[] = [];
   loading: boolean = true;
@@ -44,15 +45,24 @@ export class HrDashboardComponent implements OnInit {
   approvedCount: number = 0;
   declinedCount: number = 0;
 
+  // Current page and pagination helper properties
+  currentPage = 1;
+  totalPages = 0;
+  visiblePages: number[] = [];
+  lastPages: number[] = [];
+  showEllipsis = false;
+
   constructor(
     private requestService: RequestService,
     private messageService: MessageService
   ) {}
 
+  // Lifecycle hook - on component initialization
   ngOnInit() {
     this.loadRequests();
   }
 
+  // Returns status filter array based on active tab
   getStatusFilter(): number[] {
     switch (this.activeTab) {
       case 'pending':
@@ -66,6 +76,7 @@ export class HrDashboardComponent implements OnInit {
     }
   }
 
+  // Loads requests from service with current filters and pagination
   loadRequests() {
     this.loading = true;
     const status = this.getStatusFilter();
@@ -75,15 +86,22 @@ export class HrDashboardComponent implements OnInit {
         this.requests = response.list;
         this.totalRecords = response.total;
 
-        // Update tab counts (assuming API provides these)
+        // Update counts for each tab
         this.allCount = response.total_without_filter || 0;
         this.pendingCount = response.pending_without_filter || 0;
         this.approvedCount = response.accepted_without_filter || 0;
         this.declinedCount = response.declined_without_filter || 0;
 
+        // Calculate total pages and current page
+        this.totalPages = Math.ceil(this.totalRecords / this.rows);
+        this.currentPage = Math.floor(this.first / this.rows) + 1;
+
+        // Update pagination view details
+        this.updatePaginationView();
+
         this.loading = false;
       },
-      error: (error) => {
+      error: () => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -95,20 +113,56 @@ export class HrDashboardComponent implements OnInit {
     });
   }
 
+  // Updates pagination buttons and ellipsis visibility
+  updatePaginationView() {
+    const total = this.totalPages;
+    const current = this.currentPage;
+
+    this.showEllipsis = false;
+    this.visiblePages = [];
+    this.lastPages = [];
+
+    if (total <= 5) {
+      // Case: total pages are 5 or fewer
+      this.visiblePages = Array.from({ length: total }, (_, i) => i + 1);
+      return;
+    }
+
+    // Always show the last 3 pages
+    this.lastPages = [total - 2, total - 1, total];
+
+    if (current <= 3) {
+      // Case: User is at the beginning
+      this.visiblePages = [1, 2, 3];
+      this.showEllipsis = true;
+    } else if (current >= total - 2) {
+      // Case: User is at the end
+      this.visiblePages = [];
+      this.showEllipsis = true;
+    } else {
+      // Case: User is in the middle
+      this.visiblePages = [current - 1, current, current + 1];
+      this.showEllipsis = true;
+    }
+  }
+
+  // Handle tab change event
   onTabChange(tab: string) {
     if (this.activeTab !== tab) {
       this.activeTab = tab;
-      this.first = 0;
+      this.first = 0; // Reset to first page
       this.loadRequests();
     }
   }
 
+  // Handle page change event from pagination controls
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
     this.loadRequests();
   }
 
+  // Returns color hex code based on status number
   getStatusColor(status: number): string {
     switch (status) {
       case 0:
@@ -122,6 +176,7 @@ export class HrDashboardComponent implements OnInit {
     }
   }
 
+  // Returns readable label for status
   getStatusLabel(status: number): string {
     switch (status) {
       case 0:
@@ -135,6 +190,7 @@ export class HrDashboardComponent implements OnInit {
     }
   }
 
+  // Returns CSS class name based on request type
   getRequestTypeClass(type: string): string {
     switch (type.toLowerCase()) {
       case 'loan':
@@ -150,11 +206,20 @@ export class HrDashboardComponent implements OnInit {
     }
   }
 
+  // Checks if a value is numeric
   isNumeric(value: any): boolean {
     if (typeof value === 'number') return true;
     if (typeof value === 'string') {
       return !isNaN(Number(value)) && !isNaN(parseFloat(value));
     }
     return false;
+  }
+
+  // Changes to a specific page and reloads requests
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) return;
+
+    this.first = (page - 1) * this.rows;
+    this.loadRequests();
   }
 }
