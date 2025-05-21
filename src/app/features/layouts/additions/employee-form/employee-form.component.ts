@@ -25,7 +25,6 @@ interface Employee {
 
 @Component({
   selector: 'app-employee-form',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
