@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RequestService } from '../../../shared/services/hrrequest/hrrequest.service';
-
+import { Skeleton } from 'primeng/skeleton';
 @Component({
   selector: 'app-hr-dashboard',
   standalone: true,
@@ -22,6 +22,7 @@ import { RequestService } from '../../../shared/services/hrrequest/hrrequest.ser
     InputTextModule,
     ToastModule,
     CheckboxModule,
+    Skeleton
   ],
   templateUrl: './hr-dashboard.component.html',
   styleUrls: ['./hr-dashboard.component.scss'],
@@ -55,7 +56,8 @@ export class HrDashboardComponent implements OnInit {
   constructor(
     private requestService: RequestService,
     private messageService: MessageService
-  ) {}
+  ) { }
+
 
   // Lifecycle hook - on component initialization
   ngOnInit() {
@@ -92,13 +94,17 @@ export class HrDashboardComponent implements OnInit {
         this.approvedCount = response.accepted_without_filter || 0;
         this.declinedCount = response.declined_without_filter || 0;
 
+        // Add total to rowsPerPageOptions if not included
+        const total = this.totalRecords;
+        const existingOptions = [10, 50, 100];
+        this.rowsPerPageOptions = existingOptions.filter(opt => opt < total);
+        this.rowsPerPageOptions.push(total);
+
         // Calculate total pages and current page
-        this.totalPages = Math.ceil(this.totalRecords / this.rows);
+        this.totalPages = Math.ceil(total / this.rows);
         this.currentPage = Math.floor(this.first / this.rows) + 1;
 
-        // Update pagination view details
         this.updatePaginationView();
-
         this.loading = false;
       },
       error: () => {
@@ -111,6 +117,10 @@ export class HrDashboardComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  getSkeletonRows(): any[] {
+    return new Array(10).fill({});
   }
 
   // Updates pagination buttons and ellipsis visibility

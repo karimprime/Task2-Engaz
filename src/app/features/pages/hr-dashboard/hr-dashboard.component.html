@@ -6,15 +6,114 @@
 
     <!-- Toast Notification -->
     <p-toast></p-toast>
-<!-- Requests Table -->
-<p-table #dt [value]="requests" [(selection)]="selectedRequests" dataKey="request_id" [rowHover]="true" [rows]="rows"
-  [first]="first"
-      [loading]="loading"
-      [lazy]="true"
-      (onPage)="onPageChange($event)"
+
+    <!-- Skeleton Loader - Enhanced Version -->
+    @if (loading) {
+    <p-table [value]="[10]" [rows]="rows">
+      <!-- Skeleton Table Caption -->
+      <ng-template pTemplate="caption">
+        <div class="table-caption-container">
+          <p-skeleton width="10rem" height="2rem" class="mb-3"></p-skeleton>
+          <div class="tabs-of-tables tabs-themes fontFamily">
+            @for (tab of [1, 2, 3, 4]; track tab) {
+            <p-skeleton width="6rem" height="2rem" class="mr-2"></p-skeleton>
+            }
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Skeleton Table Headers -->
+      <ng-template pTemplate="header">
+        <tr>
+          @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track i) {
+          <th>
+            <p-skeleton width="100%" height="1.5rem"></p-skeleton>
+          </th>
+          }
+        </tr>
+      </ng-template>
+
+      <!-- Skeleton Table Rows (10 rows) -->
+      <ng-template pTemplate="body">
+        @for (row of getSkeletonRows(); track $index) {
+        <tr>
+        <tr>
+          <td>
+            <div class="d-flex gap-3 align-items-center">
+              <p-skeleton width="1.5rem" height="2.5rem"></p-skeleton>
+              <p-skeleton width="1.5rem" height="2.5rem"></p-skeleton>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <p-skeleton shape="circle" width="2rem" height="2rem"></p-skeleton>
+              <p-skeleton width="8rem" height="1.5rem"></p-skeleton>
+            </div>
+          </td>
+          <td><p-skeleton width="8rem" height="1.5rem"></p-skeleton></td>
+          <td><p-skeleton width="5rem" height="1.5rem"></p-skeleton></td>
+          <td><p-skeleton width="4rem" height="1.5rem"></p-skeleton></td>
+          <td><p-skeleton width="7rem" height="1.5rem"></p-skeleton></td>
+          <td><p-skeleton width="10rem" height="1.5rem"></p-skeleton></td>
+          <td><p-skeleton width="5rem" height="1.5rem"></p-skeleton></td>
+          <td>
+            <div class="d-flex align-items-center gap-3">
+              <p-skeleton width="5rem" height="2rem"></p-skeleton>
+              <p-skeleton width="2rem" height="2rem"></p-skeleton>
+              <p-skeleton width="2rem" height="2rem"></p-skeleton>
+            </div>
+          </td>
+        </tr>
+        }
+      </ng-template>
+    </p-table>
+
+    <!-- Skeleton Pagination -->
+    <!-- <div class="paginationContainer m-3 fontFamily paginationControls">
+      <div class="paginationContainer gap-3 align-items-center">
+        <div>
+
+          <select class="customDropdown" [(ngModel)]="rows" (change)="onPageChange({ first: 0, rows: rows })">
+            <p-skeleton width="2rem" height="2rem" class="mr-2"></p-skeleton>
+          </select>
+        </div>
+
+        <div class="fontFamily showfrom">
+          <p-skeleton width="6rem" height="1.5rem" class="mr-2"></p-skeleton>
+        </div>
+      </div>
+
+      <div class="paginationWrapper">
+        <button class="paginationBtnMove textpaginationBtnMove fontFamily" [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)">
+          <i class="bi bi-arrow-left textpaginationBtnMove fontFamily iright"></i> Previous
+        </button>
+
+        <div class="paginationNum d-flex rounded-circle gap-3">
+          <p-skeleton width="2rem" height="2rem" class="mr-2"></p-skeleton>
+          <p-skeleton width="2rem" height="2rem" class="mr-2"></p-skeleton>
+          <p-skeleton width="2rem" height="2rem" class="mr-2"></p-skeleton>
+          <span class="paginationEllipsis">...</span>
+          <p-skeleton width="2rem" height="2rem" class="mr-2"></p-skeleton>
+          <p-skeleton width="2rem" height="2rem" class="mr-2"></p-skeleton>
+          <p-skeleton width="2rem" height="2rem" class="mr-2"></p-skeleton>
+
+        </div>
+
+        <button class="paginationBtnMove textpaginationBtnMove fontFamily" [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)">
+          Next <i class="bi bi-arrow-right textpaginationBtnMove fontFamily ileft"></i>
+        </button>
+      </div>
+    </div> -->
+    }
+    <!-- Actual Table -->
+    @else {
+
+    <p-table #dt [value]="requests" [(selection)]="selectedRequests" dataKey="request_id" [rowHover]="true"
+      [rows]="rows" [first]="first" [loading]="loading" [lazy]="true" (onPage)="onPageChange($event)"
       [globalFilterFields]="['full_name', 'request_type', 'request_value', 'description']"
-      [responsiveLayout]="'scroll'"
-    >
+      [responsiveLayout]="'scroll'">
 
       <!-- TABLE CAPTION / TABS -->
       <ng-template pTemplate="caption">
@@ -27,14 +126,15 @@
             { id: 'approved', label: 'Approved', count: approvedCount },
             { id: 'declined', label: 'Declined', count: declinedCount }
             ]; track tab.id) {
-            <button class="btn-tabs btn-tabs-color fontFamily" [class.active]="activeTab === tab.id" (click)="onTabChange(tab.id)">
+            <button class="btn-tabs btn-tabs-color fontFamily" [class.active]="activeTab === tab.id"
+              (click)="onTabChange(tab.id)">
               {{ tab.label }}
               <span class="badge-tabs-themes badge">{{ tab.count }}</span>
             </button>
             }
-            </div>
-            </div>
-            </ng-template>
+          </div>
+        </div>
+      </ng-template>
 
       <!-- TABLE HEADER -->
       <ng-template pTemplate="header">
@@ -43,21 +143,21 @@
           <th style="min-width: 14rem">Employee</th>
           <th pSortableColumn="request_type" style="min-width: 14rem">
             Request Type <p-sortIcon field="request_type"></p-sortIcon>
-            </th>
-            <th pSortableColumn="sub_type" style="min-width: 14rem">
+          </th>
+          <th pSortableColumn="sub_type" style="min-width: 14rem">
             Sub-Type <p-sortIcon field="sub_type"></p-sortIcon>
-            </th>
-            <th pSortableColumn="request_value" style="min-width: 10rem">
+          </th>
+          <th pSortableColumn="request_value" style="min-width: 10rem">
             Value <p-sortIcon field="request_value"></p-sortIcon>
-            </th>
+          </th>
           <th style="min-width: 10rem">Request Date</th>
           <th style="min-width: 10rem">Creation Date</th>
           <th pSortableColumn="status" style="min-width: 10rem">
             Status <p-sortIcon field="status"></p-sortIcon>
-            </th>
+          </th>
           <th style="min-width: 10rem">Actions</th>
-          </tr>
-          </ng-template>
+        </tr>
+      </ng-template>
 
       <!-- TABLE BODY -->
       <ng-template pTemplate="body" let-request>
@@ -66,22 +166,22 @@
             <div class="d-flex gap-3 align-items-center">
               <p-tableCheckbox [value]="request"></p-tableCheckbox>
               <span class="black-color fontFamily Text-Table">{{ request.status }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              @if (request.hr_profile_photo || request.profile_photo) {
+              <img [src]="request.hr_profile_photo || request.profile_photo" alt="Employee photo" width="32"
+                style="vertical-align: middle; border-radius: 50%" />
+              } @else {
+              <div class="avatar-placeholder">
+                <i class="pi pi-user"></i>
               </div>
-              </td>
-              <td>
-                <div class="d-flex align-items-center gap-2">
-                  @if (request.hr_profile_photo || request.profile_photo) {
-                  <img [src]="request.hr_profile_photo || request.profile_photo" alt="Employee photo" width="32"
-                    style="vertical-align: middle; border-radius: 50%" />
-                  } @else {
-                  <div class="avatar-placeholder">
-                    <i class="pi pi-user"></i>
-                  </div>
-                  }
+              }
               <span class="m-2 fontFamily Text-Table">{{ request.full_name }}</span>
-              </div>
-              </td>
-              <td>
+            </div>
+          </td>
+          <td>
             <span [class]="getRequestTypeClass(request.request_type)" class="badge-default fontFamily">
               @switch (request.request_type) {
               @case ('loan') {
@@ -98,64 +198,64 @@
               }
               @default {
               {{ request.request_type | titlecase }}
-                }
-                }
-                </span>
-                </td>
-                <td class="fontFamily Text-Table">
+              }
+              }
+            </span>
+          </td>
+          <td class="fontFamily Text-Table">
             @if (['urgent', 'normal', 'sick', 'unpaid'].includes(request.request_value)) {
             {{ request.request_value }}
             } @else {
             --
             }
-            </td>
-            <td class="fontFamily Text-Table">
+          </td>
+          <td class="fontFamily Text-Table">
             @switch (request.request_type) {
             @case ('loan') {
             @if (isNumeric(request.request_value)) {
             <span>{{ request.request_value | number : "1.0-0" }} LE</span>
             } @else {
             <span>--</span>
-                }
-                }
-                @case ('excuse') {
-                @if (isNumeric(request.request_value)) {
-                <span>{{ request.request_value | number : "1.1-1" }} H</span>
-                } @else {
-                <span>--</span>
-                }
-                }
-                @case ('overtime') {
-                @if (isNumeric(request.request_value)) {
-                <span>{{ request.request_value | number : "1.1-1" }} H</span>
-                } @else {
-                <span>--</span>
-                }
-                }
-                @case ('vacation') {
-                @if (request.count_days_off == 0 || request.count_days_off === null) {
-                <span>--</span>
-                } @else {
-                <span>{{ request.count_days_off }} D</span>
-                }
-                }
-                @default {
-                <span>--</span>
-              }
-              }
-              </td>
-              <td class="fontFamily Text-Table">
-                {{ request.request_date_from | date : "dd MMM yyyy" }}
-              </td>
-              <td class="fontFamily Text-Table">
-                {{ request.creation_date | date : "yyyy-MM-dd HH:mm:ss" }}
-              </td>
-              <td>
-                <p-tag class="fontFamily" [value]="getStatusLabel(request.status)"
-                  [style]="{ color: getStatusColor(request.status) }"></p-tag>
-                </td>
-                <td style="text-align: center">
-                  <div class="d-flex align-items-center gap-3">
+            }
+            }
+            @case ('excuse') {
+            @if (isNumeric(request.request_value)) {
+            <span>{{ request.request_value | number : "1.1-1" }} H</span>
+            } @else {
+            <span>--</span>
+            }
+            }
+            @case ('overtime') {
+            @if (isNumeric(request.request_value)) {
+            <span>{{ request.request_value | number : "1.1-1" }} H</span>
+            } @else {
+            <span>--</span>
+            }
+            }
+            @case ('vacation') {
+            @if (request.count_days_off == 0 || request.count_days_off === null) {
+            <span>--</span>
+            } @else {
+            <span>{{ request.count_days_off }} D</span>
+            }
+            }
+            @default {
+            <span>--</span>
+            }
+            }
+          </td>
+          <td class="fontFamily Text-Table">
+            {{ request.request_date_from | date : "dd MMM yyyy" }}
+          </td>
+          <td class="fontFamily Text-Table">
+            {{ request.creation_date | date : "yyyy-MM-dd HH:mm:ss" }}
+          </td>
+          <td>
+            <p-tag class="fontFamily" [value]="getStatusLabel(request.status)"
+              [style]="{ color: getStatusColor(request.status) }"></p-tag>
+          </td>
+          <td style="text-align: center">
+            <div class="d-flex align-items-center gap-3">
               <button class="action-buttons btn-preview fontFamily">Preview</button>
               <div class="d-flex align-items-center gap-3">
                 <button class="btn-checker action-buttons fontFamily">
@@ -164,11 +264,11 @@
                 <button class="action-buttons btn-x fontFamily">
                   <i class="pi pi-times"></i>
                 </button>
-                </div>
-                </div>
-                </td>
-                </tr>
-                </ng-template>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
 
       <!-- EMPTY TABLE MESSAGE -->
       <ng-template pTemplate="emptymessage">
@@ -176,61 +276,61 @@
           <td colspan="9">No requests found.</td>
         </tr>
       </ng-template>
-      </p-table>
-<!-- PAGINATION CONTROLS -->
-<div class="paginationContainer m-3 fontFamily paginationControls">
-  <div class="paginationContainer gap-3 align-items-center">
-    <div>
-      <select id="rowsPerPage" class="customDropdown" [(ngModel)]="rows"
-        (change)="onPageChange({ first: 0, rows: rows })">
-        @for (opt of rowsPerPageOptions; track opt) {
-        <option [value]="opt">Show entries {{ opt }}</option>
-        }
-      </select>
-    </div>
+    </p-table>
+    }
+    <!-- PAGINATION CONTROLS -->
+    <div class="paginationContainer m-3 fontFamily paginationControls">
+      <div class="paginationContainer gap-3 align-items-center">
+        <div>
 
-    <div class="fontFamily showfrom">
-      @if (totalRecords > 0) {
-      Showing {{ first + 1 }} to {{ (first + rows) > totalRecords ? totalRecords : rows }} of {{ totalRecords }} entries
-      } @else {
-      Showing 0 to 0 of 0 entries
-      }
+          <select class="customDropdown" [(ngModel)]="rows" (change)="onPageChange({ first: 0, rows: rows })">
+            @for (opt of rowsPerPageOptions; track opt) {
+            <option [value]="opt">Show entries {{ opt }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="fontFamily showfrom">
+          @if (totalRecords > 0) {
+          Showing {{ first + 1 }} to {{ (first + rows) > totalRecords ? totalRecords : rows }} of {{ totalRecords }}
+          entries
+          }
+        </div>
+      </div>
+
+      <div class="paginationWrapper">
+        <button class="paginationBtnMove textpaginationBtnMove fontFamily" [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)">
+          <i class="bi bi-arrow-left textpaginationBtnMove fontFamily iright"></i> Previous
+        </button>
+
+        <div class="paginationNum">
+          @if (visiblePages[0] > 1) {
+          <button class="paginationBtn" (click)="changePage(1)" [ngClass]="{ active: currentPage === 1 }">1</button>
+          <span class="paginationEllipsis">...</span>
+          }
+
+          @for (page of visiblePages; track page) {
+          <button class="paginationBtn" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">
+            {{ page }}
+          </button>
+          }
+
+          @if (lastPages[0] > (visiblePages[visiblePages.length - 1] || 0)) {
+          <span class="paginationEllipsis">...</span>
+          @for (page of lastPages; track page) {
+          <button class="paginationBtn" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">
+            {{ page }}
+          </button>
+          }
+          }
+        </div>
+
+        <button class="paginationBtnMove textpaginationBtnMove fontFamily" [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)">
+          Next <i class="bi bi-arrow-right textpaginationBtnMove fontFamily ileft"></i>
+        </button>
+      </div>
     </div>
   </div>
-
-  <div class="paginationWrapper">
-    <button class="paginationBtnMove textpaginationBtnMove fontFamily" [disabled]="currentPage === 1"
-      (click)="changePage(currentPage - 1)">
-      <i class="bi bi-arrow-left textpaginationBtnMove fontFamily iright"></i> Previous
-    </button>
-
-    <div class="paginationNum">
-      @if (visiblePages[0] > 1) {
-      <button class="paginationBtn" (click)="changePage(1)" [ngClass]="{ active: currentPage === 1 }">1</button>
-      <span class="paginationEllipsis">...</span>
-      }
-
-      @for (page of visiblePages; track page) {
-      <button class="paginationBtn" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">
-        {{ page }}
-      </button>
-      }
-
-      @if (lastPages[0] > (visiblePages[visiblePages.length - 1] || 0)) {
-      <span class="paginationEllipsis">...</span>
-      @for (page of lastPages; track page) {
-      <button class="paginationBtn" [ngClass]="{ active: currentPage === page }" (click)="changePage(page)">
-        {{ page }}
-      </button>
-      }
-      }
-    </div>
-
-    <button class="paginationBtnMove textpaginationBtnMove fontFamily" [disabled]="currentPage === totalPages"
-      (click)="changePage(currentPage + 1)">
-      Next <i class="bi bi-arrow-right textpaginationBtnMove fontFamily ileft"></i>
-    </button>
-  </div>
-</div>
-</div>
 </div>

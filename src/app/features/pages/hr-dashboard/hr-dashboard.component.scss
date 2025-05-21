@@ -192,11 +192,11 @@ tr:hover .btn-preview {
       padding: 1rem;
     }
 
-    .p-datatable-thead > tr > th {
+    .p-datatable-thead>tr>th {
       text-align: left;
     }
 
-    .p-datatable-tbody > tr > td {
+    .p-datatable-tbody>tr>td {
       cursor: auto;
     }
 
@@ -209,7 +209,7 @@ tr:hover .btn-preview {
     width: 100%;
   }
 
-  .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+  .p-datatable-customers .p-datatable-tbody>tr>td .p-column-title {
     display: none;
   }
 }
@@ -346,10 +346,10 @@ tr:hover .btn-preview {
 
 /* Responsive */
 @media (min-width: 400px) and (max-width: 791px) {
-.paginationContainer{
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  .paginationContainer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
   }
 }
