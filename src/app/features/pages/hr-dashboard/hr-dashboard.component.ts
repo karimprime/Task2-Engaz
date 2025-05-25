@@ -12,7 +12,6 @@ import { RequestService } from '../../../shared/services/hrrequest/hrrequest.ser
 import { Skeleton } from 'primeng/skeleton';
 @Component({
   selector: 'app-hr-dashboard',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
